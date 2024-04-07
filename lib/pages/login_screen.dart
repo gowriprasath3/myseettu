@@ -1,11 +1,67 @@
+// ignore_for_file: avoid_print
+
+import 'dart:js';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:myseettu/components/my_button.dart';
 import 'package:myseettu/components/my_textfield.dart';
 
-class LogInPage extends StatelessWidget {
+class LogInPage extends StatefulWidget {
   LogInPage({super.key});
-  final userNameController = TextEditingController();
+
+  @override
+  State<LogInPage> createState() => _LogInPageState();
+}
+
+class _LogInPageState extends State<LogInPage> {
+  final emailController = TextEditingController();
+
   final passwordController = TextEditingController();
+
+  String errorText = "";
+
+  changeState(newMessage) {
+    setState(() {
+      errorText = newMessage;
+    });
+  }
+
+  signIn() async {
+    print("Tapped====");
+
+    showDialog(
+        builder: (context) {
+          return const Center(
+            child: CircularProgressIndicator(
+              strokeWidth: 2.0, // adjust the width of the circle
+              valueColor: AlwaysStoppedAnimation<Color>(
+                  Colors.grey), // change the color of the circle
+              backgroundColor:
+                  Colors.grey, // change the background color of the circle
+            ),
+          );
+        }, context: this.context);
+
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: emailController.text, password: passwordController.text);
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        changeState('No user found for that email.');
+        print('No user found for that email.');
+      } else if (e.code == 'wrong-password') {
+        changeState('Wrong password provided for that user.');
+        print('Wrong password provided for that user.');
+      } else {
+        changeState(e.code);
+        print('Authentication error : ${e.code}');
+      }
+    }
+
+    Navigator.pop(this.context);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,9 +89,9 @@ class LogInPage extends StatelessWidget {
                 height: 15,
               ),
               MyTextField(
-                hintText: "Username",
+                hintText: "Email",
                 obstructText: false,
-                controller: userNameController,
+                controller: emailController,
               ),
               const SizedBox(
                 height: 10,
@@ -48,12 +104,16 @@ class LogInPage extends StatelessWidget {
               const SizedBox(
                 height: 3,
               ),
-              const Padding(
-                padding: EdgeInsets.only(right: 40.0),
+              Padding(
+                padding: const EdgeInsets.only(right: 40.0, left: 40.0),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
+                      errorText,
+                      style: const TextStyle(color: Colors.red, fontSize: 14.0),
+                    ),
+                    const Text(
                       "Forgot Password?",
                       style: TextStyle(color: Colors.grey, fontSize: 16.0),
                     ),
@@ -63,7 +123,7 @@ class LogInPage extends StatelessWidget {
               const SizedBox(
                 height: 15,
               ),
-              const MyButton(),
+              MyButton(buttonFunc: signIn),
               const SizedBox(
                 height: 15,
               ),
@@ -93,24 +153,44 @@ class LogInPage extends StatelessWidget {
                     ),
                   ],
                 ),
-              ),   
+              ),
               const SizedBox(
                 height: 5,
-              ),          
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Container(
+                  SizedBox(
                       height: 50.0,
                       width: 50.0,
                       child: Image.asset("../assets/google_logo.png")),
                   const SizedBox(
                     width: 10.0,
                   ),
-                  Container(
-                      height: 50.0,
-                      width: 50.0,
-                      child: Image.asset("../assets/facebook_logo.png"),),
+                  SizedBox(
+                    height: 50.0,
+                    width: 50.0,
+                    child: Image.asset("../assets/facebook_logo.png"),
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 10.0,
+              ),
+              const Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Not a member?",
+                    style: TextStyle(color: Colors.grey, fontSize: 14.0),
+                  ),
+                  SizedBox(
+                    width: 10.0,
+                  ),
+                  Text(
+                    "Register Now",
+                    style: TextStyle(color: Colors.blue, fontSize: 14.0),
+                  ),
                 ],
               )
             ],

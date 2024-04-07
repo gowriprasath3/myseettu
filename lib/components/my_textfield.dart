@@ -17,7 +17,7 @@ class MyTextField extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 10),
       child: TextFormField(
         controller: controller,
-        cursorHeight: 0.3,
+        // cursorHeight: 20.0,
         // hintText: 'Enter a search term',
         decoration: InputDecoration(
           hintText: hintText,
@@ -32,7 +32,7 @@ class MyTextField extends StatelessWidget {
           fillColor: const Color.fromARGB(255, 229, 226, 226),
           filled: true,
         ),
-        style: const TextStyle(fontSize: 16 , height: 0.5),
+        style: const TextStyle(fontSize: 16 ),
         obscureText: obstructText,
       ),
     );
