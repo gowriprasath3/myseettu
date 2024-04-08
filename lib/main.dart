@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:another_flutter_splash_screen/another_flutter_splash_screen.dart';
 import 'package:myseettu/firebase_options.dart';
 import 'package:myseettu/pages/auth_page.dart';
+import 'package:myseettu/pages/signup_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,7 +25,10 @@ class MyApp extends StatelessWidget {
             seedColor: const Color.fromARGB(255, 14, 64, 104)),
         useMaterial3: true,
       ),
-      home: const Splash()
+      home: const Splash(),
+      routes: {
+        '/register': (context) => const SignUpPage(),
+      },
     );
   }
 }

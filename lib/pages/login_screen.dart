@@ -1,9 +1,8 @@
 // ignore_for_file: avoid_print
-
-import 'dart:js';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:myseettu/components/circle_loader.dart';
 import 'package:myseettu/components/my_button.dart';
 import 'package:myseettu/components/my_textfield.dart';
 
@@ -28,20 +27,11 @@ class _LogInPageState extends State<LogInPage> {
   }
 
   signIn() async {
-    print("Tapped====");
-
     showDialog(
         builder: (context) {
-          return const Center(
-            child: CircularProgressIndicator(
-              strokeWidth: 2.0, // adjust the width of the circle
-              valueColor: AlwaysStoppedAnimation<Color>(
-                  Colors.grey), // change the color of the circle
-              backgroundColor:
-                  Colors.grey, // change the background color of the circle
-            ),
-          );
-        }, context: this.context);
+          return const Spinner();
+        },
+        context: context);
 
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
@@ -58,8 +48,8 @@ class _LogInPageState extends State<LogInPage> {
         print('Authentication error : ${e.code}');
       }
     }
-
-    Navigator.pop(this.context);
+    // ignore: use_build_context_synchronously
+    Navigator.pop(context);
   }
 
   @override
@@ -123,7 +113,10 @@ class _LogInPageState extends State<LogInPage> {
               const SizedBox(
                 height: 15,
               ),
-              MyButton(buttonFunc: signIn),
+              MyButton(
+                buttonFunc: signIn,
+                buttonName: 'Sign in',
+              ),
               const SizedBox(
                 height: 15,
               ),
@@ -177,19 +170,24 @@ class _LogInPageState extends State<LogInPage> {
               const SizedBox(
                 height: 10.0,
               ),
-              const Row(
+              Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
+                  const Text(
                     "Not a member?",
                     style: TextStyle(color: Colors.grey, fontSize: 14.0),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 10.0,
                   ),
-                  Text(
-                    "Register Now",
-                    style: TextStyle(color: Colors.blue, fontSize: 14.0),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(context, "/register");
+                    },
+                    child: const Text(
+                      "Register Now",
+                      style: TextStyle(color: Colors.blue, fontSize: 14.0),
+                    ),
                   ),
                 ],
               )

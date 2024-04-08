@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 class MyButton extends StatelessWidget {
-  const MyButton({super.key, required this.buttonFunc});
-
+  const MyButton({super.key, required this.buttonFunc, required this.buttonName});
+  final String buttonName;
   final buttonFunc;
 
   @override
@@ -17,9 +17,9 @@ class MyButton extends StatelessWidget {
           shape: BoxShape.rectangle,
           color: Colors.black,
         ),
-        child: const Text(
-          "Sign in",
-          style: TextStyle(color: Colors.white, fontSize: 16.0),
+        child: Text(
+          buttonName,
+          style: const TextStyle(color: Colors.white, fontSize: 16.0),
         ),
       ),
     );
