@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:myseettu/pages/home_page.dart';
+import 'package:myseettu/pages/loginOrRegister_page.dart';
 import 'package:myseettu/pages/login_screen.dart';
 
 class AuthPage extends StatelessWidget {
@@ -13,9 +14,11 @@ class AuthPage extends StatelessWidget {
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
         if(snapshot.hasData){
+          print("snaphot has data...");
            return HomePage();
         }else{
-          return LogInPage();
+          print("not logged in...redirecting to loginOrRegisterPage...");
+          return const LoginOrRegisterPage();
         }
       },),
     );

@@ -5,7 +5,9 @@ import 'package:myseettu/components/my_button.dart';
 import 'package:myseettu/components/my_textfield.dart';
 
 class SignUpPage extends StatefulWidget {
-  const SignUpPage({super.key});
+  const SignUpPage({super.key, required this.ontap});
+
+  final Function()? ontap;
 
   @override
   State<SignUpPage> createState() => _SignUpPageState();
@@ -27,18 +29,19 @@ class _SignUpPageState extends State<SignUpPage> {
       try {
         await FirebaseAuth.instance.createUserWithEmailAndPassword(
             email: emailController.text, password: passwordController.text);
+        // await FirebaseAuth.instance.signInWithEmailAndPassword(
+        //     email: emailController.text, password: passwordController.text);
       } on FirebaseAuthException catch (e) {
         setState(() {
-        errorText = e.code;
-      });
+          errorText = e.code;
+        });
       }
     } else {
       setState(() {
         errorText = "password doesn't match";
       });
     }
-    // ignore: use_build_context_synchronously
-    Navigator.pop(context);
+    Navigator.of(context, rootNavigator: true).pop();
   }
 
   @override
@@ -175,9 +178,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       width: 10.0,
                     ),
                     GestureDetector(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
+                      onTap: widget.ontap,
                       child: const Text(
                         "Login Now",
                         style: TextStyle(color: Colors.blue, fontSize: 14.0),

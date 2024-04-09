@@ -1,13 +1,14 @@
 // ignore_for_file: avoid_print
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:myseettu/components/circle_loader.dart';
 import 'package:myseettu/components/my_button.dart';
 import 'package:myseettu/components/my_textfield.dart';
 
 class LogInPage extends StatefulWidget {
-  LogInPage({super.key});
+  const LogInPage({super.key, required this.ontap});
+
+  final Function()? ontap;
 
   @override
   State<LogInPage> createState() => _LogInPageState();
@@ -48,8 +49,7 @@ class _LogInPageState extends State<LogInPage> {
         print('Authentication error : ${e.code}');
       }
     }
-    // ignore: use_build_context_synchronously
-    Navigator.pop(context);
+    Navigator.of(context, rootNavigator: true).pop();
   }
 
   @override
@@ -181,9 +181,7 @@ class _LogInPageState extends State<LogInPage> {
                     width: 10.0,
                   ),
                   GestureDetector(
-                    onTap: () {
-                      Navigator.pushNamed(context, "/register");
-                    },
+                    onTap: widget.ontap,
                     child: const Text(
                       "Register Now",
                       style: TextStyle(color: Colors.blue, fontSize: 14.0),
