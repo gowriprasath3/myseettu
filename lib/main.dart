@@ -1,8 +1,15 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:another_flutter_splash_screen/another_flutter_splash_screen.dart';
-import 'package:myseettu/pages/login_screen.dart'; 
+import 'package:myseettu/firebase_options.dart';
+import 'package:myseettu/pages/auth_page.dart';
+import 'package:myseettu/pages/signup_screen.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform
+  );
   runApp(const MyApp());
 }
 
@@ -18,7 +25,7 @@ class MyApp extends StatelessWidget {
             seedColor: const Color.fromARGB(255, 14, 64, 104)),
         useMaterial3: true,
       ),
-      home: const Splash()
+      home: const Splash(),
     );
   }
 }
@@ -42,7 +49,7 @@ class Splash extends StatelessWidget {
             child: Image.asset("assets/my_seettu_logo.PNG"),
           ),
           onAnimationEnd: () => debugPrint("On Fade In End"),
-          nextScreen: LogInPage(),
+          nextScreen: const AuthPage(),
           duration: const Duration(seconds: 3),
         );
   }
