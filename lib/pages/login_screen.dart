@@ -1,9 +1,11 @@
 // ignore_for_file: avoid_print
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:myseettu/components/circle_loader.dart';
 import 'package:myseettu/components/my_button.dart';
 import 'package:myseettu/components/my_textfield.dart';
+import 'package:myseettu/pages/resetPassword_page.dart';
 
 class LogInPage extends StatefulWidget {
   const LogInPage({super.key, required this.ontap});
@@ -103,9 +105,15 @@ class _LogInPageState extends State<LogInPage> {
                       errorText,
                       style: const TextStyle(color: Colors.red, fontSize: 14.0),
                     ),
-                    const Text(
-                      "Forgot Password?",
-                      style: TextStyle(color: Colors.grey, fontSize: 16.0),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => const ResetPasswordPage()));
+                      },
+                      child: const Text(
+                        "Forgot Password?",
+                        style: TextStyle(color: Colors.grey, fontSize: 16.0),
+                      ),
                     ),
                   ],
                 ),
