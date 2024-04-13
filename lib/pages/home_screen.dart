@@ -1,14 +1,15 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-  final String title;
+  const MyHomePage({super.key});
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  @override
+  var user = FirebaseAuth.instance.currentUser!;
+  @override 
   Widget build(BuildContext context) {
     return Scaffold(
       //  appBar: AppBar(
@@ -55,9 +56,9 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                     Container(
                       margin: const EdgeInsets.fromLTRB(3.0, 0.0, 0.0, 0.0),
-                      child: const Text(
-                        "Gowri Prasath S",
-                        style: TextStyle(
+                      child: Text(
+                        user.email!,
+                        style: const TextStyle(
                             color: Colors.black,
                             fontSize: 20.0,
                             fontWeight: FontWeight.bold),

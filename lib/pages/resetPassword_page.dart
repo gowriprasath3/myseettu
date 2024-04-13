@@ -25,23 +25,29 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
       await FirebaseAuth.instance
           .sendPasswordResetEmail(email: emailTextController.text.trim());
       Navigator.of(context, rootNavigator: true).pop();
-      const AlertDialog(actions: [Text("reset link sent successfully...")]);
+      print("reset link sent");
+
+      // ignore: use_build_context_synchronously
+      showDialog(context: context, builder: (context){
+        return  AlertDialog(content: Text("Password reset link sent to ${emailTextController.text.trim()}"),);
+      });
     } on FirebaseAuthException catch (e) {
+      // ignore: use_build_context_synchronously
       Navigator.of(context, rootNavigator: true).pop();
       print("reset error:" + e.code);
-      AlertDialog(
-        actions: [
-          Text(
+      showDialog(context: context, builder: (context){
+        return AlertDialog(
+        content: Text(
             e.code,
             style: const TextStyle(color: Colors.grey, fontSize: 14.0),
           ),
-        ],
         icon: const Icon(Icons.warning_rounded),
         title: const Text(
           "Warning",
           style: TextStyle(color: Colors.grey, fontSize: 18.0),
         ),
       );
+      });
     }
   }
 
@@ -59,7 +65,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
               height: 10.0,
             ),
             MyTextField(
-                hintText: "email",
+                hintText: "Email",
                 obstructText: false,
                 controller: emailTextController),
             MyButton(buttonFunc: resetPassword, buttonName: "Reset")
